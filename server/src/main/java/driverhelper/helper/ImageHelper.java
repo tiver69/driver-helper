@@ -104,7 +104,7 @@ public class ImageHelper {
                 break;
             }
         }
-        LOGGER.info("Destination on Ox before black pixel on {x, " + yPosition + "}: " + x);
+        LOGGER.debug("Destination on Ox before black pixel on {x, " + yPosition + "}: " + x);
         return x;
     }
 
@@ -114,7 +114,7 @@ public class ImageHelper {
             y++;
             if (y >= bi.getHeight()) break;
         }
-        LOGGER.info("Destination on Ox before black pixel on {" + xPosition + ", y}: " + y);
+        LOGGER.debug("Destination on Ox before black pixel on {" + xPosition + ", y}: " + y);
         return y;
     }
 
