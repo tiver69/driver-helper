@@ -101,6 +101,8 @@
       disableOnInteraction: false
     },
     loop: false,
+    observer: true,
+    observeParents: true,
     navigation: {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev"

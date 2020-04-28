@@ -32,7 +32,7 @@ class TrackingTab extends Component {
   }
 
   async doStartResivingData() {
-    if (this.state.i == 29) {
+    if (this.state.i === 29) {
       console.log("reset");
       this.props.postResetData();
       this.setState({ i: 0 });
