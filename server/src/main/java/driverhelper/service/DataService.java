@@ -51,4 +51,8 @@ public class DataService {
                 .build();
     }
 
+    public SensorNode getCurrentSensorNodeDataPack() {
+        return TestDataArray.sensorData.get(TestDataArray.getCurrentSensorDataStep());
+    }
+
 }

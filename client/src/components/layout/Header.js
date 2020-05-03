@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import logo from "../../resources/images/logo.png";
 import { Link } from "react-router-dom";
-// import IcoMoon from "react-icomoon";
 
 class Header extends Component {
   render() {

@@ -1029,6 +1029,123 @@ input[type="checkbox"] {
   margin: 0 auto 3rem auto;
 }
 
+#tab-3 .container {
+  color: white;
+  text-align: center;
+}
+
+.sensor-point {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  left: 26.5px;
+  top: 26.5px;
+  position: absolute;
+  z-index: 1;
+}
+
+.sensor-data {
+  font-size: 1.25rem;
+}
+
+#left-side-angle-sensor {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  top: 265px;
+  left: -35px;
+}
+
+#left-side-sensor {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  top: 495px;
+  left: -35px;
+}
+
+#right-side-angle-sensor {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  top: 265px;
+  right: -35px;
+}
+
+#front-sensor {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  top: -35px;
+  left: 115px;
+}
+
+.cross {
+  position: relative;
+}
+.cross::after {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.cross-angle-right::after {
+  background: linear-gradient(
+    to top right,
+    transparent 45%,
+    rgba(255, 0, 0, 0.35) 50%,
+    rgba(255, 0, 0, 0.35) 50%,
+    transparent 55%
+  );
+}
+
+.cross-angle-left::after {
+  background: linear-gradient(
+    to top left,
+    transparent 45%,
+    rgba(255, 0, 0, 0.35) 50%,
+    rgba(255, 0, 0, 0.35) 50%,
+    transparent 55%
+  );
+}
+
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #dfc;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
+}
+
 /***************************/
 /*     6. Screenshots     */
 /***************************/
@@ -1586,6 +1703,18 @@ a:hover.back-to-top {
   .ex-basic-2 .text-container.column {
     margin-bottom: 0;
   }
+
+  .mobile-off {
+    display: block !important;
+  }
+
+  .mobile-on {
+    display: none;
+  }
+
+  .sensor-data {
+    font-size: 1.75rem;
+  }
   /* end of extra pages */
 }
 /* end of min-width width 992px */
@@ -1603,6 +1732,10 @@ a:hover.back-to-top {
   /* end of navigation */
 
   /* General Styles */
+  .container {
+    max-width: 1300px;
+  }
+
   .p-heading {
     width: 44%;
   }
@@ -1761,12 +1894,10 @@ a:hover.back-to-top {
   width: 300px;
   height: 600px;
   overflow: hidden;
+  margin: auto;
 }
 
 #car {
-  /*background-position: 22 449;*/
-  /* width: 290px;
-  height: 527px; */
   content: "";
   position: relative;
   overflow: hidden;
@@ -1777,11 +1908,8 @@ a:hover.back-to-top {
   position: absolute;
   width: 228px;
   height: 502px;
-  /* top: 12.62293354px;
-  left: 31.46754624px; */
   background-image: url("../images/aveo-fade.png");
   background-repeat: no-repeat;
-  /* transform: rotate(7.421856387869064deg); */
 }
 
 body {
@@ -1789,4 +1917,13 @@ body {
   font-size: 100%;
   color: #333;
   background-color: #ddd;
+}
+
+.icon {
+  width: 50px;
+  height: 50px;
+}
+
+.mobile-off {
+  display: none;
 }

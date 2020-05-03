@@ -42,8 +42,14 @@ class Landing2 extends Component {
 
         <div className="slider-2">
           <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
+            <div
+              className="row"
+              style={{
+                minHeight:
+                  "calc(100vh - 139.635px - 19.976px - 24px - 4.875rem)"
+              }}
+            >
+              <div className="col-lg-12  align-self-center">
                 <div className="slider-container">
                   <div className="swiper-container image-slider">
                     <div className="swiper-wrapper">{outputCarsSlides}</div>

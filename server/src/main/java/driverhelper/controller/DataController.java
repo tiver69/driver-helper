@@ -2,6 +2,7 @@ package driverhelper.controller;
 
 import driverhelper.constants.TestDataArray;
 import driverhelper.model.Data;
+import driverhelper.model.SensorNode;
 import driverhelper.service.DataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,14 @@ public class DataController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/reset")
+    @GetMapping("/sensor-node")
+    public ResponseEntity<?> getCurrentSensorNodeDataPack() {
+        LOGGER.debug("Request for latest sensor node data");
+        SensorNode response = dataService.getCurrentSensorNodeDataPack();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/reset") //todo: will be removed later
     public ResponseEntity<?> resetSensorDataToFirstElement() {
         LOGGER.debug("Reset test data-pack to first element");
         TestDataArray.resetSensorDataStep();
