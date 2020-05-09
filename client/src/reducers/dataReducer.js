@@ -1,7 +1,8 @@
-import { GET_DATA, POST_RESET_DATA } from "../actions/types";
+import { GET_DATA, GET_SENSOR_DATA, POST_RESET_DATA } from "../actions/types";
 
 const initialState = {
-  dataNode: {}
+  dataNode: {},
+  sensorDataNode: {}
 };
 
 export default function(state = initialState, action) {
@@ -10,6 +11,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         dataNode: action.payload
+      };
+    case GET_SENSOR_DATA:
+      return {
+        ...state,
+        sensorDataNode: action.payload
       };
     case POST_RESET_DATA:
       return {

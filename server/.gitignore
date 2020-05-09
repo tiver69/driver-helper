@@ -9,7 +9,7 @@ target/
 .classpath
 .factorypath
 .project
-.settings
+.garageSettings
 .springBeans
 .sts4-cache
 mvnw

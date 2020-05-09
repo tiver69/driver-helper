@@ -1,8 +1,26 @@
 import React, { Component } from "react";
 import CarSlide from "./CarSlide";
+import { connect } from "react-redux";
+import { getAllCars } from "../../actions/SettingsActions";
+import PropTypes from "prop-types";
 
-class Landing2 extends Component {
+class Landing extends Component {
+  componentDidMount() {
+    this.props.getAllCars();
+  }
+
   render() {
+    const { allCars } = this.props.settings;
+    var outputCarsSlides = allCars.map(car => (
+      <CarSlide
+        key={car.id}
+        id={car.id}
+        src={car.imageSrc}
+        brand={car.brand}
+        model={car.model}
+      />
+    ));
+
     return (
       <React.Fragment>
         <header id="header" className="header">
@@ -24,57 +42,17 @@ class Landing2 extends Component {
 
         <div className="slider-2">
           <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
+            <div
+              className="row"
+              style={{
+                minHeight:
+                  "calc(100vh - 139.635px - 19.976px - 24px - 4.875rem)"
+              }}
+            >
+              <div className="col-lg-12  align-self-center">
                 <div className="slider-container">
                   <div className="swiper-container image-slider">
-                    <div className="swiper-wrapper">
-                      <CarSlide
-                        src="./images/aveo.jpg"
-                        brand="Chevroet"
-                        model="AVEO"
-                      />
-                      <CarSlide
-                        src="./images/vitara.jpg"
-                        brand="Suzuki"
-                        model="VITARA"
-                      />
-                      <CarSlide
-                        src="./images/mini.jpg"
-                        brand="Mini"
-                        model="COOPER"
-                      />
-                      <CarSlide
-                        src="./images/aveo.jpg"
-                        brand="Chevroet"
-                        model="AVEO"
-                      />
-                      <CarSlide
-                        src="./images/vitara.jpg"
-                        brand="Suzuki"
-                        model="VITARA"
-                      />
-                      <CarSlide
-                        src="./images/mini.jpg"
-                        brand="Mini"
-                        model="COOPER"
-                      />
-                      <CarSlide
-                        src="./images/aveo.jpg"
-                        brand="Chevroet"
-                        model="AVEO"
-                      />
-                      <CarSlide
-                        src="./images/vitara.jpg"
-                        brand="Suzuki"
-                        model="VITARA"
-                      />
-                      <CarSlide
-                        src="./images/mini.jpg"
-                        brand="Mini"
-                        model="COOPER"
-                      />
-                    </div>
+                    <div className="swiper-wrapper">{outputCarsSlides}</div>
                     <div className="swiper-button-next"></div>
                     <div className="swiper-button-prev"></div>
                   </div>
@@ -88,4 +66,12 @@ class Landing2 extends Component {
   }
 }
 
-export default Landing2;
+Landing.propTypes = {
+  settings: PropTypes.object.isRequired,
+  getAllCars: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  settings: state.settings
+});
+export default connect(mapStateToProps, { getAllCars })(Landing);

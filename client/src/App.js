@@ -19,7 +19,7 @@ function App() {
       <Router>
         <Header />
         <Route exact path="/" component={Landing} />
-        <Route exact path="/garage" component={Garage} />
+        <Route exact path="/garage:carId" component={Garage} />
         <Footer />
       </Router>
     </Provider>

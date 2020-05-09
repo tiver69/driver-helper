@@ -2,6 +2,8 @@ package driverhelper.service;
 
 import driverhelper.constants.TestDataArray;
 import driverhelper.model.*;
+import driverhelper.model.response.Data;
+import driverhelper.model.response.SensorNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -51,4 +53,7 @@ public class DataService {
                 .build();
     }
 
+    public SensorNode getCurrentSensorNodeDataPack() {
+        return TestDataArray.sensorData.get(TestDataArray.getCurrentSensorDataStep());
+    }
 }

@@ -32,7 +32,7 @@ class TrackingTab extends Component {
   }
 
   async doStartResivingData() {
-    if (this.state.i == 29) {
+    if (this.state.i === 29) {
       console.log("reset");
       this.props.postResetData();
       this.setState({ i: 0 });
@@ -62,20 +62,25 @@ class TrackingTab extends Component {
 
     return (
       <div
-        className="tab-pane fade  show active"
+        className="tab-pane fade show active"
         id="tab-2"
         role="tabpanel"
         aria-labelledby="tab-2"
       >
         <div className="container">
-          <div className="row justify-content-md-center">
+          <div
+            className="row"
+            style={{ minHeight: "calc(100vh - 94.74px - 19.976px - 24px)" }}
+          >
             {/* <button onClick={this.handleClick}>
                         DONT PUSH ME!!!
                       </button>
                       <button onClick={this.handleResetClick}>RESET ALL</button> */}
-            <div id="background">
-              <div id="car" style={dynamicStyle0}>
-                <div id="before" style={dynamicStyle}></div>
+            <div className="col-12  justify-content-md-center align-self-center">
+              <div id="background">
+                <div id="car" style={dynamicStyle0}>
+                  <div id="before" style={dynamicStyle}></div>
+                </div>
               </div>
             </div>
           </div>
