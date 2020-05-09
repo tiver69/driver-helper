@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import ConfigurationTab from "./ConfigurationTab";
 import TrackingTab from "./TrackingTab";
 import MonitoringTab from "./MonitoringTab";
-// import IcoMoon from "react-icomoon";
+import Icon from "../../resources/webfonts/icomoon/Icon";
 
 class Garage extends Component {
   render() {
+    const { carId } = this.props.match.params;
+    console.log(carId);
+
     return (
       <React.Fragment>
         <header id="header" className="header">
@@ -32,7 +35,8 @@ class Garage extends Component {
                                 aria-controls="tab-1"
                                 aria-selected="true"
                               >
-                                <i className="fas fa-cog"></i>CONFIGURING
+                                <Icon className="icon fas fa-cog" icon="cog" />
+                                CONFIGURING
                               </a>
                             </li>
                             <li className="nav-item col-4">
@@ -45,7 +49,11 @@ class Garage extends Component {
                                 aria-controls="tab-2"
                                 aria-selected="false"
                               >
-                                <i className="fas fa-binoculars"></i>TRACKING
+                                <Icon
+                                  className="icon fas fa-cog"
+                                  icon="binoculars"
+                                />
+                                TRACKING
                               </a>
                             </li>
                             <li className="nav-item col-4">
@@ -58,7 +66,11 @@ class Garage extends Component {
                                 aria-controls="tab-3"
                                 aria-selected="false"
                               >
-                                <i className="fas fa-search"></i>MONITORING
+                                <Icon
+                                  className="icon fas fa-cog"
+                                  icon="search"
+                                />
+                                MONITORING
                               </a>
                             </li>
                           </ul>
@@ -76,7 +88,7 @@ class Garage extends Component {
           <div className="container">
             <div className="row">
               <div className="tab-content" id="lenoTabsContent">
-                <ConfigurationTab />
+                <ConfigurationTab carId={carId} />
                 <TrackingTab />
                 <MonitoringTab />
               </div>

@@ -1,4 +1,4 @@
-package driverhelper.model;
+package driverhelper.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

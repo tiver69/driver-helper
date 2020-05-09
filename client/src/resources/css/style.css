@@ -369,7 +369,7 @@ input[type="checkbox"] {
   border-radius: 1.5rem;
   background-color: #00c9db;
   color: #fff;
-  font: 700 0.75rem/1.75rem "Montserrat", sans-serif;
+  font: 700 0.75rem "Montserrat", sans-serif;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -1704,7 +1704,11 @@ a:hover.back-to-top {
     margin-bottom: 0;
   }
 
-  .mobile-off {
+  #tab-1 .mobile-off {
+    display: flex !important;
+  }
+
+  #tab-3 .mobile-off {
     display: block !important;
   }
 
@@ -1922,6 +1926,11 @@ body {
 .icon {
   width: 50px;
   height: 50px;
+}
+
+.icon.fas.fa-cog {
+  width: 16px;
+  height: 16px;
 }
 
 .mobile-off {

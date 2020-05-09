@@ -1,4 +1,4 @@
-package driverhelper.model.database;
+package driverhelper.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Car {
+public class CarSettings {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,8 +1,10 @@
 package driverhelper.controller;
 
 import driverhelper.constants.TestDataArray;
-import driverhelper.model.Data;
-import driverhelper.model.SensorNode;
+import driverhelper.helper.FileHelper;
+import driverhelper.model.response.Data;
+import driverhelper.model.response.GarageSettings;
+import driverhelper.model.response.SensorNode;
 import driverhelper.service.DataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +24,7 @@ public class DataController {
     private DataService dataService;
 
     @GetMapping
-    public ResponseEntity<?> getCurrentDataPack(
-            /*@RequestParam("trainId") Long trainId,
-            @RequestParam("departureDate") String departureDate,
-            @RequestParam("coachNumber") Integer coachNumber*/) {
+    public ResponseEntity<?> getCurrentDataPack() {
         LOGGER.debug("Request for next data-pack");
         Data response = dataService.getCurrentDataPack();
         return new ResponseEntity<>(response, HttpStatus.OK);

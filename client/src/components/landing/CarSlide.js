@@ -5,8 +5,8 @@ class CarSlide extends Component {
   render() {
     return (
       <div className="swiper-slide">
-        <Link to="/garage" className="car-slide">
-          <img className="img-fluid" src={this.props.src} alt="alternative" />
+        <Link to={`/garage${this.props.id}`} className="car-slide">
+          <img className="img-fluid" src={this.props.src} alt="your car" />
 
           <div className="card-body">
             <p className="testimonial-text">

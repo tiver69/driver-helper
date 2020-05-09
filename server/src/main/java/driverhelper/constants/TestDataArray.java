@@ -1,6 +1,6 @@
 package driverhelper.constants;
 
-import driverhelper.model.SensorNode;
+import driverhelper.model.response.SensorNode;
 import lombok.Getter;
 
 import java.util.Arrays;

@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import CarSlide from "./CarSlide";
 import { connect } from "react-redux";
-import { getAllCars } from "../../actions/CarActions";
+import { getAllCars } from "../../actions/SettingsActions";
 import PropTypes from "prop-types";
 
-class Landing2 extends Component {
+class Landing extends Component {
   componentDidMount() {
     this.props.getAllCars();
   }
 
   render() {
-    const { allCars } = this.props.car;
-    console.log(allCars);
+    const { allCars } = this.props.settings;
     var outputCarsSlides = allCars.map(car => (
       <CarSlide
         key={car.id}
+        id={car.id}
         src={car.imageSrc}
         brand={car.brand}
         model={car.model}
@@ -66,12 +66,12 @@ class Landing2 extends Component {
   }
 }
 
-Landing2.propTypes = {
-  car: PropTypes.object.isRequired,
+Landing.propTypes = {
+  settings: PropTypes.object.isRequired,
   getAllCars: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  car: state.car
+  settings: state.settings
 });
-export default connect(mapStateToProps, { getAllCars })(Landing2);
+export default connect(mapStateToProps, { getAllCars })(Landing);

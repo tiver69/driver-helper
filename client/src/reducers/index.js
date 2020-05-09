@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
 import dataReducer from "./dataReducer";
-import carReducer from "./carReducer";
+import settingsReducer from "./settingsReducer";
+import errorReducer from "./errorReducer";
 
 export default combineReducers({
   dataNode: dataReducer,
-  car: carReducer
+  settings: settingsReducer,
+  error: errorReducer
 });

@@ -62,7 +62,7 @@ public class ImageHelper {
                 int xDestination = xDistance.get(LEFT_SIDE_SENSOR_HEIGHT_POSITION - y) + x;
                 int yDestination = yDistance.get(FRONT_SENSOR_WIDTH_POSITION - x) + y;
                 if (yDestination == frontSensor && xDestination == leftSideSensor) {
-                    System.out.println(frontSensor + ": {" + x + ", " + y + "} " + xDestination + " " + yDestination);
+//                    System.out.println(frontSensor + ": {" + x + ", " + y + "} " + xDestination + " " + yDestination);
                     return Optional.of(Coordinates.builder()
                             .x(x)
                             .y(y)

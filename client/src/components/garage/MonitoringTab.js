@@ -20,8 +20,6 @@ class MonitoringTab extends Component {
   render() {
     const { sensorDataNode } = this.props.dataNode;
 
-    const greenAlert = { color: "#dfc" };
-
     return (
       <div
         className="tab-pane fade"

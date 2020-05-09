@@ -1,7 +1,9 @@
-import { GET_ALL_CARS } from "../actions/types";
+import { GET_ALL_CARS, GET_SETTINGS } from "../actions/types";
 
 const initialState = {
-  allCars: []
+  allCars: [],
+  curentCar: {},
+  garageConfig: {}
 };
 
 export default function(state = initialState, action) {
@@ -10,6 +12,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         allCars: action.payload
+      };
+    case GET_SETTINGS:
+      return {
+        ...state,
+        garageConfig: action.payload
       };
 
     default:
