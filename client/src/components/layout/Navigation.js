@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { getAllCars } from "../../actions/SettingsActions";
 import PropTypes from "prop-types";
 
-class Header extends Component {
+class Navigation extends Component {
   componentDidMount() {
     this.props.getAllCars();
   }
@@ -92,7 +92,7 @@ class Header extends Component {
   }
 }
 
-Header.propTypes = {
+Navigation.propTypes = {
   settings: PropTypes.object.isRequired,
   getAllCars: PropTypes.func.isRequired
 };
@@ -100,4 +100,4 @@ Header.propTypes = {
 const mapStateToProps = state => ({
   settings: state.settings
 });
-export default connect(mapStateToProps, { getAllCars })(Header);
+export default connect(mapStateToProps, { getAllCars })(Navigation);

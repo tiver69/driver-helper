@@ -1,17 +1,24 @@
 package driverhelper.helper;
 
+import driverhelper.controller.SettingsController;
 import driverhelper.model.Coordinates;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+@Component
 public class AngleSensorHelper {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SettingsController.class);
 
     /**
      * @return (360 - angle) if left sensor data is lesser than right,
      * and angle if left sensor data is bigger than right
      */
-    public static double getAngle(int leftAngleSensorData, int rightAngleSensorData) {
+    public double getAngle(int leftAngleSensorData, int rightAngleSensorData) {
         Coordinates leftSensor = getLeftSensorCoordinates(leftAngleSensorData);
         Coordinates rightSensor = getRightSensorCoordinates(rightAngleSensorData);
         double cathet = getDistanceBetweenTwoCoordinates(rightSensor, new Coordinates(150, rightSensor.getY()));
@@ -27,7 +34,7 @@ public class AngleSensorHelper {
     /**
      * y = -2x
      */
-    protected static Coordinates getLeftSensorCoordinates(int distance) {
+    protected Coordinates getLeftSensorCoordinates(int distance) {
         BigDecimal resultX = getRightX(distance);
         BigDecimal resultY = resultX.add(resultX);
         return new Coordinates(resultX.doubleValue(), resultY.doubleValue());
@@ -36,7 +43,7 @@ public class AngleSensorHelper {
     /**
      * y = 2x
      */
-    protected static Coordinates getRightSensorCoordinates(int distance) {
+    protected Coordinates getRightSensorCoordinates(int distance) {
         BigDecimal resultX = getLeftX(distance);
         BigDecimal resultY = resultX.multiply(new BigDecimal(-2));
         return new Coordinates(resultX.doubleValue(), resultY.doubleValue());
@@ -46,7 +53,7 @@ public class AngleSensorHelper {
      * x = -150, y = 300
      * 5x^2 + 1500x + 150^2 + 300^2 = distance^2
      */
-    protected static BigDecimal getRightX(int distance) {
+    protected BigDecimal getRightX(int distance) {
         BigDecimal b = new BigDecimal(1500);
         BigDecimal add1 = new BigDecimal(150);
         BigDecimal add2 = new BigDecimal(300);
@@ -66,7 +73,7 @@ public class AngleSensorHelper {
      * x = 150, y = 300
      * 5x^2 - 1500x + 150^2 + 300^2 = distance^2
      */
-    protected static BigDecimal getLeftX(int distance) {
+    protected BigDecimal getLeftX(int distance) {
         BigDecimal b = new BigDecimal(1500);
         BigDecimal add1 = new BigDecimal(150);
         BigDecimal add2 = new BigDecimal(300);
@@ -86,7 +93,7 @@ public class AngleSensorHelper {
      * Gets coordinates of intersection with X = 150
      * Y = (Yb-Ya)/(Xb-Xa)*X - (Yb-Ya)/(Xb-Xa)*Xa + Ya
      */
-    protected static Coordinates getTochechka(Coordinates leftSensor, Coordinates rightSensor) {
+    protected Coordinates getTochechka(Coordinates leftSensor, Coordinates rightSensor) {
         BigDecimal drob = BigDecimal.valueOf(rightSensor.getY()).subtract(BigDecimal.valueOf(leftSensor.getY()))
                 .divide(BigDecimal.valueOf(rightSensor.getX()).subtract(BigDecimal.valueOf(leftSensor.getX())), new MathContext(10));
         BigDecimal y = drob.multiply(new BigDecimal(150))
@@ -98,7 +105,7 @@ public class AngleSensorHelper {
     /**
      * @return result^2 = (Xb-Xa)^2 + (Yb-Ya)^2
      */
-    protected static double getDistanceBetweenTwoCoordinates(Coordinates pointOne, Coordinates pointTwo) {
+    protected double getDistanceBetweenTwoCoordinates(Coordinates pointOne, Coordinates pointTwo) {
         BigDecimal sum1 = BigDecimal.valueOf(pointTwo.getX()).subtract(BigDecimal.valueOf(pointOne.getX())).pow(2);
         BigDecimal sum2 = BigDecimal.valueOf(pointTwo.getY()).subtract(BigDecimal.valueOf(pointOne.getY())).pow(2);
         BigDecimal result = sum1.add(sum2).sqrt(new MathContext(10));

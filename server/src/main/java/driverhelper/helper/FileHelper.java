@@ -4,6 +4,7 @@ import driverhelper.model.response.GarageSettings;
 import driverhelper.model.response.CarSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,6 +17,7 @@ import java.util.Properties;
 import static driverhelper.constants.Constants.SETTINGS_PROPERTIES_PATH_READ;
 import static driverhelper.constants.Constants.SETTINGS_PROPERTIES_PATH_WRITE;
 
+@Component
 public class FileHelper {
 
     public static String GARAGE_WIDTH = "garage_width";
@@ -30,7 +32,7 @@ public class FileHelper {
     private static Properties propsBuff;
     private static boolean shouldBuffReload = false;
 
-    public static void setGarageSettings(GarageSettings garageSettings) {
+    public void setGarageSettings(GarageSettings garageSettings) {
         Properties props = getPropsBuff();
         props.put(GARAGE_WIDTH, String.valueOf(garageSettings.getGarageWidth()));
         props.put(GARAGE_HEIGHT, String.valueOf(garageSettings.getGarageHeight()));
@@ -42,14 +44,14 @@ public class FileHelper {
         LOGGER.info("Rewriting settings property file");
     }
 
-    public static void setPropertyValue(String propertyName, String value) {
+    public void setPropertyValue(String propertyName, String value) {
         Properties props = getPropsBuff();
         props.put(propertyName, value);
         rewriteFile(props);
         LOGGER.info("Rewriting settings property file");
     }
 
-    public static Optional<CarSettings> getCarById(int id) {
+    public Optional<CarSettings> getCarById(int id) {
         Properties props = getPropsBuff();
         String property = props.getProperty(CARS.get(id - 1));
         if (property.equals("")) {
@@ -64,17 +66,17 @@ public class FileHelper {
                 .build());
     }
 
-    public static String getPropValues(String propertyName) {
+    public String getPropValues(String propertyName) {
         Properties props = getPropsBuff();
         return props.getProperty(propertyName);
     }
 
-    public static double getDoublePropValues(String propertyName) {
+    public double getDoublePropValues(String propertyName) {
         Properties props = getPropsBuff();
         return Double.parseDouble(props.getProperty(propertyName));
     }
 
-    public static GarageSettings getSettingsPropValues() {
+    public GarageSettings getSettingsPropValues() {
         return GarageSettings.builder()
                 .garageWidth(getDoublePropValues(GARAGE_WIDTH))
                 .garageHeight(getDoublePropValues(GARAGE_HEIGHT))
@@ -85,12 +87,12 @@ public class FileHelper {
                 .build();
     }
 
-    private static List<String> splitComplexProperty(String property) {
+    private List<String> splitComplexProperty(String property) {
         String[] split = property.split(DELIMITER);
         return Arrays.asList(split);
     }
 
-    private static void rewriteFile(Properties props) {
+    private void rewriteFile(Properties props) {
         FileOutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(SETTINGS_PROPERTIES_PATH_WRITE);
@@ -101,7 +103,7 @@ public class FileHelper {
         shouldBuffReload = true;
     }
 
-    private static Properties getPropsBuff() {
+    private Properties getPropsBuff() {
         try {
             if (propsBuff == null || shouldBuffReload) {
                 propsBuff = new Properties();

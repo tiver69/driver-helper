@@ -6,6 +6,7 @@ import driverhelper.model.Dimensions;
 import driverhelper.model.DimensionsEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -20,11 +21,12 @@ import java.util.Optional;
 import static driverhelper.constants.GarageConstants.FRONT_SENSOR_WIDTH_POSITION;
 import static driverhelper.constants.GarageConstants.LEFT_SIDE_SENSOR_HEIGHT_POSITION;
 
+@Component
 public class ImageHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageHelper.class);
 
-    public static double getRotatedImageShiftOnCurrentAngle(BufferedImage bi, double radsAlpha, DimensionsEnum dimension) {
+    public double getRotatedImageShiftOnCurrentAngle(BufferedImage bi, double radsAlpha, DimensionsEnum dimension) {
         BigDecimal a = dimension.equals(DimensionsEnum.WIDTH) ? BigDecimal.valueOf(bi.getHeight()) : BigDecimal.valueOf(bi.getWidth());
         BigDecimal b = dimension.equals(DimensionsEnum.HEIGHT) ? BigDecimal.valueOf(bi.getHeight()) : BigDecimal.valueOf(bi.getWidth());
         BigDecimal d = b.pow(2).add(a.pow(2)).sqrt(new MathContext(10));
@@ -42,7 +44,7 @@ public class ImageHelper {
         return h.doubleValue();
     }
 
-    public static Optional<Coordinates> getRotatedImagePositionOnCurrentSensorData(BufferedImage bi, double rads, double leftSideSensor, double frontSensor) {
+    public Optional<Coordinates> getRotatedImagePositionOnCurrentSensorData(BufferedImage bi, double rads, double leftSideSensor, double frontSensor) {
         bi = rotateImage(bi, rads);
         List<Integer> xDistance = new ArrayList<>();
         for (int y = 0; y < bi.getHeight(); y++) {
@@ -62,7 +64,7 @@ public class ImageHelper {
                 int xDestination = xDistance.get(LEFT_SIDE_SENSOR_HEIGHT_POSITION - y) + x;
                 int yDestination = yDistance.get(FRONT_SENSOR_WIDTH_POSITION - x) + y;
                 if (yDestination == frontSensor && xDestination == leftSideSensor) {
-//                    System.out.println(frontSensor + ": {" + x + ", " + y + "} " + xDestination + " " + yDestination);
+                    LOGGER.info(frontSensor + ", " + leftSideSensor + ": {" + x + ", " + y + "} " + xDestination + " " + yDestination);
                     return Optional.of(Coordinates.builder()
                             .x(x)
                             .y(y)
@@ -74,7 +76,16 @@ public class ImageHelper {
         return Optional.empty();
     }
 
-    public static BufferedImage rotateImage(BufferedImage bi, double rads) {
+    public Dimensions getDimensionsAfterRotation(BufferedImage bi, double rads) {
+        final double sin = Math.abs(Math.sin(rads));
+        final double cos = Math.abs(Math.cos(rads));
+        return Dimensions.builder()
+                .width(bi.getWidth() * cos + bi.getHeight() * sin)
+                .height(bi.getHeight() * cos + bi.getWidth() * sin)
+                .build();
+    }
+
+    private BufferedImage rotateImage(BufferedImage bi, double rads) {
         Dimensions rotatedDimensions = getDimensionsAfterRotation(bi, rads);
         final int w = (int) Math.floor(rotatedDimensions.getWidth());
         final int h = (int) Math.floor(rotatedDimensions.getHeight());
@@ -87,16 +98,7 @@ public class ImageHelper {
         return rotateOp.filter(bi, rotatedImage);
     }
 
-    public static Dimensions getDimensionsAfterRotation(BufferedImage bi, double rads) {
-        final double sin = Math.abs(Math.sin(rads));
-        final double cos = Math.abs(Math.cos(rads));
-        return Dimensions.builder()
-                .width(bi.getWidth() * cos + bi.getHeight() * sin)
-                .height(bi.getHeight() * cos + bi.getWidth() * sin)
-                .build();
-    }
-
-    private static int countXDestination(BufferedImage bi, int yPosition) {
+    private int countXDestination(BufferedImage bi, int yPosition) {
         int x = 0;
         while (!Color.BLACK.equals(getPixelColor(bi, x, yPosition))) {
             x++;
@@ -108,7 +110,7 @@ public class ImageHelper {
         return x;
     }
 
-    private static int countYDestination(BufferedImage bi, int xPosition) {
+    private int countYDestination(BufferedImage bi, int xPosition) {
         int y = 0;
         while (!Color.BLACK.equals(getPixelColor(bi, xPosition, y))) {
             y++;
@@ -118,10 +120,9 @@ public class ImageHelper {
         return y;
     }
 
-    private static Color getPixelColor(BufferedImage bi, int x, int y) {
+    private Color getPixelColor(BufferedImage bi, int x, int y) {
         Object colorData = bi.getRaster().getDataElements(x, y, null);
         int argb = bi.getColorModel().getRGB(colorData);
         return new Color(argb, true);
     }
-
 }

@@ -8,56 +8,59 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AngleSensorHelperTest {
+
+    private static AngleSensorHelper angleSensorHelper = new AngleSensorHelper();
 
     @ParameterizedTest
     @MethodSource("getAngleParams")
     public void testGetAngle(int leftSensorData, int rightSensorData, double expectedResult) {
-        double result = AngleSensorHelper.getAngle(leftSensorData, rightSensorData);
+        AngleSensorHelper angleSensorHelper = new AngleSensorHelper();
+        double result = angleSensorHelper.getAngle(leftSensorData, rightSensorData);
         assertEquals(result, expectedResult);
     }
 
     @ParameterizedTest
     @MethodSource("getDistanceBetweenTwoCoordinatesParams")
     public void testGetDistanceBetweenTwoCoordinates(Coordinates leftSensor, Coordinates rightSensor, double expectedResult) {
-        double result = AngleSensorHelper.getDistanceBetweenTwoCoordinates(leftSensor, rightSensor);
+        double result = angleSensorHelper.getDistanceBetweenTwoCoordinates(leftSensor, rightSensor);
         assertEquals(result, expectedResult);
     }
 
     @ParameterizedTest
     @MethodSource("getTochechkaParams")
     public void testGetTochechka(Coordinates leftSensor, Coordinates rightSensor, Coordinates expectedResult) {
-        Coordinates result = AngleSensorHelper.getTochechka(leftSensor, rightSensor);
+        Coordinates result = angleSensorHelper.getTochechka(leftSensor, rightSensor);
         assertEquals(result, expectedResult);
     }
 
     @ParameterizedTest
     @MethodSource("getRightSensorCoordinatesParams")
     public void testGetRightSensorCoordinates(int distance, Coordinates expectedResult) {
-        Coordinates result = AngleSensorHelper.getRightSensorCoordinates(distance);
+        Coordinates result = angleSensorHelper.getRightSensorCoordinates(distance);
         assertEquals(result, expectedResult);
     }
 
     @ParameterizedTest
     @MethodSource("getLeftSensorCoordinatesParams")
     public void testGetLeftSensorCoordinates(int distance, Coordinates expectedResult) {
-        Coordinates result = AngleSensorHelper.getLeftSensorCoordinates(distance);
+        Coordinates result = angleSensorHelper.getLeftSensorCoordinates(distance);
         assertEquals(result, expectedResult);
     }
 
     @ParameterizedTest
     @MethodSource("getRightXParams")
     public void testGetRightX(int distance, double expectedResult) {
-        BigDecimal result = AngleSensorHelper.getRightX(distance);
+        BigDecimal result = angleSensorHelper.getRightX(distance);
         assertEquals(result.doubleValue(), expectedResult);
     }
 
     @ParameterizedTest
     @MethodSource("getLeftXParams")
     public void testGetLeftX(int distance, double expectedResult) {
-        BigDecimal result = AngleSensorHelper.getLeftX(distance);
+        BigDecimal result = angleSensorHelper.getLeftX(distance);
         assertEquals(result.doubleValue(), expectedResult);
     }
 
