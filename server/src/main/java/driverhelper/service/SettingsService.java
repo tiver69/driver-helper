@@ -25,8 +25,7 @@ public class SettingsService {
     private FileHelper fileHelper;
 
     public GarageSettings getGarageSettings() {
-        GarageSettings garageSettings = fileHelper.getSettingsPropValues();
-        return garageSettings;
+        return fileHelper.getSettingsPropValues();
     }
 
     public void patchGarageSettings(GarageSettings garageSettings) {
@@ -34,12 +33,12 @@ public class SettingsService {
         fileHelper.setGarageSettings(garageSettings);
     }
 
+    public void setUpActiveCar(Integer carId) {
+        settingsValidator.validateActiveCarNumber(carId);
+    }
+
     public List<CarSettings> getAllCars() {
-        List<CarSettings> carList = new ArrayList<>();
-        /// TODO: create method in helper
-        IntStream.rangeClosed(1, 10).forEach(i -> {
-            fileHelper.getCarById(i).ifPresent(carList::add);
-        });
+        List<CarSettings> carList = fileHelper.getAllAvailableCarSettings();
         carList.forEach(item -> item.setModel(item.getModel().toUpperCase()));
         return carList;
     }

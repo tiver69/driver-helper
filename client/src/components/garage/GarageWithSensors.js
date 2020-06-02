@@ -2,10 +2,37 @@ import React, { Component } from "react";
 import OnlineStatusAnimation from "./OnlineStatusAnimation";
 import OfflineStatusAnimation from "./OfflineStatusAnimation";
 import { getSensorAlertMobile } from "./functions";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import Icon from "../../resources/webfonts/icomoon/Icon";
 
 class GarageWithSensors extends Component {
+  constructor() {
+    super();
+    this.state = {
+      garageWidth: 300,
+      garageHeight: 600,
+      frontSensor: 150,
+      leftAngleSensor: 300,
+      rightAngleSensor: 300,
+      leftSensor: 530
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { garageConfig } = nextProps.settings;
+    if (garageConfig.garageWidth !== undefined)
+      this.setState({
+        garageWidth: garageConfig.garageWidth,
+        garageHeight: garageConfig.garageHeight,
+        frontSensor: garageConfig.frontSensor,
+        leftAngleSensor: garageConfig.leftAngleSensor,
+        rightAngleSensor: garageConfig.rightAngleSensor,
+        leftSensor: garageConfig.leftSensor
+      });
+  }
+
   sensorData = () => {
     const { sensorDataNode } = this.props.sensorDataNode;
     return (
@@ -83,6 +110,14 @@ class GarageWithSensors extends Component {
   render() {
     const { sensorDataNode } = this.props.sensorDataNode;
 
+    const dynamicStyleBackgroung = {
+      position: "relative",
+      overflow: "unset",
+      margin: "auto",
+      width: this.state.garageWidth + "px",
+      height: this.state.garageHeight + "px"
+    };
+
     return (
       <div
         className={
@@ -92,17 +127,15 @@ class GarageWithSensors extends Component {
         }
       >
         <div>
-          <div
-            id="background"
-            style={{
-              position: "relative",
-              overflow: "unset",
-              margin: "auto"
-            }}
-          >
+          <div id="background" style={dynamicStyleBackgroung}>
             {this.props.mobile === true ? this.sensorData() : null}
 
-            <div id="left-side-angle-sensor">
+            <div
+              id="left-side-angle-sensor"
+              style={{
+                top: this.state.leftAngleSensor - 35 + "px"
+              }}
+            >
               {sensorDataNode.leftSideAngle === 0 ? (
                 <OfflineStatusAnimation />
               ) : (
@@ -111,14 +144,24 @@ class GarageWithSensors extends Component {
                 />
               )}
             </div>
-            <div id="left-side-sensor">
+            <div
+              id="left-side-sensor"
+              style={{
+                top: this.state.leftSensor - 35 + "px"
+              }}
+            >
               {sensorDataNode.leftSide === 0 ? (
                 <OfflineStatusAnimation />
               ) : (
                 <OnlineStatusAnimation distValue={sensorDataNode.leftSide} />
               )}
             </div>
-            <div id="right-side-angle-sensor">
+            <div
+              id="right-side-angle-sensor"
+              style={{
+                top: this.state.rightAngleSensor - 35 + "px"
+              }}
+            >
               {sensorDataNode.rightSideAngle === 0 ? (
                 <OfflineStatusAnimation />
               ) : (
@@ -127,7 +170,12 @@ class GarageWithSensors extends Component {
                 />
               )}
             </div>
-            <div id="front-sensor">
+            <div
+              id="front-sensor"
+              style={{
+                left: this.state.frontSensor - 35 + "px"
+              }}
+            >
               {sensorDataNode.front === 0 ? (
                 <OfflineStatusAnimation />
               ) : (
@@ -140,4 +188,12 @@ class GarageWithSensors extends Component {
     );
   }
 }
-export default GarageWithSensors;
+
+GarageWithSensors.propTypes = {
+  settings: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  settings: state.settings
+});
+export default connect(mapStateToProps, {})(GarageWithSensors);

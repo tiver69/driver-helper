@@ -1,5 +1,6 @@
 export const GET_DATA = "GET_DATA";
 export const GET_SENSOR_DATA = "GET_SENSOR_DATA";
+export const SET_ACTIVE_CAR = "SET_ACTIVE_CAR";
 export const GET_SETTINGS = "GET_SETTINGS";
 export const POST_RESET_DATA = "POST_RESET_DATA";
 

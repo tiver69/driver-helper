@@ -9,10 +9,8 @@ import org.springframework.stereotype.Component;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.IntStream;
 
 import static driverhelper.constants.Constants.SETTINGS_PROPERTIES_PATH_READ;
 import static driverhelper.constants.Constants.SETTINGS_PROPERTIES_PATH_WRITE;
@@ -27,6 +25,7 @@ public class FileHelper {
     public static String RIGHT_ANGLE_SENSOR = "right_angle_sensor";
     public static List<String> CARS = Arrays.asList("car1", "car2", "car3", "car4", "car5", "car6", "car7", "car8", "car9", "car10");
     public static String LEFT_SENSOR = "left_sensor";
+    public static int MAX_CAR_SETTINGS_AVAILABLE = 10;
     private static String DELIMITER = ":";
     private static final Logger LOGGER = LoggerFactory.getLogger(FileHelper.class);
     private static Properties propsBuff;
@@ -49,6 +48,14 @@ public class FileHelper {
         props.put(propertyName, value);
         rewriteFile(props);
         LOGGER.info("Rewriting settings property file");
+    }
+
+    public List<CarSettings> getAllAvailableCarSettings() {
+        List<CarSettings> carList = new ArrayList<>();
+        IntStream.rangeClosed(1, MAX_CAR_SETTINGS_AVAILABLE).forEach(i -> {
+            getCarById(i).ifPresent(carList::add);
+        });
+        return carList;
     }
 
     public Optional<CarSettings> getCarById(int id) {

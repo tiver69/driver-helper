@@ -22,10 +22,17 @@ public class SettingsController {
     @Autowired
     SettingsService settingsService;
 
-    @GetMapping //todo:replace with two methods
-    public ResponseEntity<?> setUpActiveCarAndGetGarageSettings(@RequestParam("carId") Integer carId) {
+    @PostMapping
+    public ResponseEntity<?> setUpActiveCar(@RequestParam("carId") Integer carId) {
+        settingsService.setUpActiveCar(carId);
+        LOGGER.info("Setting car#" + carId + " as active");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getGarageSettings() {
         GarageSettings response = settingsService.getGarageSettings();
-        LOGGER.info("Setting car#" + carId + " as active and sending current settings" + response);
+        LOGGER.info("Sending current settings: " + response);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -33,7 +40,8 @@ public class SettingsController {
     public ResponseEntity<?> patchGarageSettings(@RequestBody GarageSettings garageSettings) {
         LOGGER.info("Receive new settings" + garageSettings.toString());
         settingsService.patchGarageSettings(garageSettings);
-        return new ResponseEntity<>(HttpStatus.OK);
+        GarageSettings response = settingsService.getGarageSettings();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/cars")

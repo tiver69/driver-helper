@@ -88,8 +88,8 @@ class Garage extends Component {
           <div className="container">
             <div className="row">
               <div className="tab-content" id="lenoTabsContent">
-                <ConfigurationTab carId={carId} />
-                <TrackingTab />
+                <ConfigurationTab />
+                <TrackingTab carId={carId} />
                 <MonitoringTab />
               </div>
             </div>

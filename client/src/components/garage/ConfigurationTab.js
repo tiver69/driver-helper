@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import OfflineStatusAnimation from "./OfflineStatusAnimation";
 import classnames from "classnames";
 import {
-  setUpActiveCarAndGetGarageSettings,
+  getGarageSettings,
   updateSettings
 } from "../../actions/SettingsActions";
 import { connect } from "react-redux";
@@ -27,7 +27,7 @@ class ConfigurationTab extends Component {
   }
 
   componentDidMount() {
-    this.props.setUpActiveCarAndGetGarageSettings(this.props.carId);
+    this.props.getGarageSettings();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,21 +44,22 @@ class ConfigurationTab extends Component {
   }
 
   onRestoreClick(e) {
-    this.setState({
+    e.preventDefault();
+    const settings = {
       garageWidth: 300,
       garageHeight: 600,
       frontSensor: 150,
       leftAngleSensor: 300,
       rightAngleSensor: 300,
       leftSensor: 530
-    });
+    };
 
-    this.onSubmitClick(e);
+    console.log(settings);
+    this.props.updateSettings(settings);
   }
 
   onSubmitClick(e) {
     e.preventDefault();
-
     const settings = {
       garageWidth: this.state.garageWidth,
       garageHeight: this.state.garageHeight,
@@ -103,7 +104,7 @@ class ConfigurationTab extends Component {
                   <div className="form-group">
                     <input
                       type="number"
-                      min="200"
+                      min="300"
                       className={classnames("form-control-input", {
                         notEmpty: this.state.garageWidth !== ""
                       })}
@@ -119,7 +120,7 @@ class ConfigurationTab extends Component {
                   <div className="form-group">
                     <input
                       type="number"
-                      min="400"
+                      min="500"
                       className={classnames("form-control-input", {
                         notEmpty: this.state.garageHeight !== ""
                       })}
@@ -325,7 +326,7 @@ class ConfigurationTab extends Component {
                 this.state.frontSensor !== "" &&
                 this.state.frontSensor < this.state.garageWidth
                   ? {
-                      leftSensor: this.state.frontSensor - 35 + "px"
+                      left: this.state.frontSensor - 35 + "px"
                     }
                   : null
               }
@@ -441,7 +442,7 @@ class ConfigurationTab extends Component {
                       this.state.frontSensor !== "" &&
                       this.state.frontSensor < this.state.garageWidth
                         ? {
-                            leftSensor: this.state.frontSensor - 35 + "px"
+                            left: this.state.frontSensor - 35 + "px"
                           }
                         : null
                     }
@@ -460,7 +461,7 @@ class ConfigurationTab extends Component {
 
 ConfigurationTab.propTypes = {
   updateSettings: PropTypes.func.isRequired,
-  setUpActiveCarAndGetGarageSettings: PropTypes.func.isRequired,
+  getGarageSettings: PropTypes.func.isRequired,
   settings: PropTypes.object.isRequired
 };
 
@@ -471,5 +472,5 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   updateSettings,
-  setUpActiveCarAndGetGarageSettings
+  getGarageSettings
 })(ConfigurationTab);

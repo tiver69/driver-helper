@@ -27,13 +27,13 @@ import static driverhelper.constants.GarageConstants.LEFT_SIDE_SENSOR_HEIGHT_POS
 @Service
 public class DataService {
 
+    private BufferedImage CAR = ImageIO.read(new File(AVEO_IMAGE_PATH));
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataService.class);
+
     @Autowired
     private AngleSensorHelperV2 angleSensorHelper;
     @Autowired
     private ImageHelper imageHelper;
-
-    private BufferedImage CAR = ImageIO.read(new File(AVEO_IMAGE_PATH));
-    private static final Logger LOGGER = LoggerFactory.getLogger(DataService.class);
 
     public DataService() throws IOException {
     }

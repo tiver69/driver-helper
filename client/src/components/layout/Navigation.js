@@ -15,11 +15,11 @@ class Navigation extends Component {
     var outputCarsSlides = allCars.map(car => (
       <React.Fragment key={car.id}>
         {" "}
-        <Link to={"/garage" + car.id} className="dropdown-item">
+        <a href={"/garage" + car.id} className="dropdown-item">
           <span className="item-text">
             {car.brand} {car.model}
           </span>
-        </Link>
+        </a>
         <div className="dropdown-items-divide-hr"></div>
       </React.Fragment>
     ));
@@ -57,7 +57,7 @@ class Navigation extends Component {
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle page-scroll"
-                  href="#details"
+                  href="#"
                   id="navbarDropdown"
                   role="button"
                   aria-haspopup="true"

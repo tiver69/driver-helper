@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getDataNode, postResetData } from "../../actions/DataActions";
+import { setUpActiveCar } from "../../actions/SettingsActions";
 import PropTypes from "prop-types";
 
 class TrackingTab extends Component {
@@ -8,7 +9,9 @@ class TrackingTab extends Component {
     super();
     this.state = {
       i: 0,
-      render: false
+      render: false,
+      garageWidth: 300,
+      garageHeight: 600
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleResetClick = this.handleResetClick.bind(this);
@@ -26,6 +29,7 @@ class TrackingTab extends Component {
   }
 
   componentDidMount() {
+    this.props.setUpActiveCar(this.props.carId);
     this.props.postResetData();
     this.doStartResivingData();
     setInterval(this.doStartResivingData.bind(this), 1000);
@@ -44,6 +48,15 @@ class TrackingTab extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { garageConfig } = nextProps.settings;
+    if (garageConfig.garageWidth !== undefined)
+      this.setState({
+        garageWidth: garageConfig.garageWidth,
+        garageHeight: garageConfig.garageHeight
+      });
+  }
+
   render() {
     const { dataNode } = this.props.dataNode;
 
@@ -58,6 +71,11 @@ class TrackingTab extends Component {
       transform: "rotate(" + dataNode.degree + "deg)",
       top: dataNode.shiftedWidth + "px",
       left: dataNode.shiftedHeight + "px"
+    };
+
+    const dynamicStyleBackgroung = {
+      width: this.state.garageWidth + "px",
+      height: this.state.garageHeight + "px"
     };
 
     return (
@@ -77,7 +95,7 @@ class TrackingTab extends Component {
                       </button>
                       <button onClick={this.handleResetClick}>RESET ALL</button> */}
             <div className="col-12  justify-content-md-center align-self-center">
-              <div id="background">
+              <div id="background" style={dynamicStyleBackgroung}>
                 <div id="car" style={dynamicStyle0}>
                   <div id="before" style={dynamicStyle}></div>
                 </div>
@@ -93,12 +111,17 @@ class TrackingTab extends Component {
 TrackingTab.propTypes = {
   dataNode: PropTypes.object.isRequired,
   getDataNode: PropTypes.func.isRequired,
-  postResetData: PropTypes.func.isRequired
+  setUpActiveCar: PropTypes.func.isRequired,
+  postResetData: PropTypes.func.isRequired,
+  settings: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
+  settings: state.settings,
   dataNode: state.dataNode
 });
-export default connect(mapStateToProps, { getDataNode, postResetData })(
-  TrackingTab
-);
+export default connect(mapStateToProps, {
+  getDataNode,
+  postResetData,
+  setUpActiveCar
+})(TrackingTab);
