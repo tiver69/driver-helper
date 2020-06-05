@@ -1,30 +1,38 @@
 package driverhelper.helper;
 
-import driverhelper.constants.GarageConstants;
 import driverhelper.model.Coordinates;
 import driverhelper.model.Dimensions;
 import driverhelper.model.DimensionsEnum;
+import driverhelper.model.response.CarSettings;
+import driverhelper.model.response.GarageSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static driverhelper.constants.GarageConstants.FRONT_SENSOR_WIDTH_POSITION;
-import static driverhelper.constants.GarageConstants.LEFT_SIDE_SENSOR_HEIGHT_POSITION;
+import static driverhelper.constants.Constants.IMAGE_BASE_FORMAT;
+import static driverhelper.constants.Constants.IMAGE_BASE_PATH;
 
 @Component
 public class ImageHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageHelper.class);
+
+    @Autowired
+    private FileHelper fileHelper;
 
     public double getRotatedImageShiftOnCurrentAngle(BufferedImage bi, double radsAlpha, DimensionsEnum dimension) {
         BigDecimal a = dimension.equals(DimensionsEnum.WIDTH) ? BigDecimal.valueOf(bi.getHeight()) : BigDecimal.valueOf(bi.getWidth());
@@ -45,6 +53,7 @@ public class ImageHelper {
     }
 
     public Optional<Coordinates> getRotatedImagePositionOnCurrentSensorData(BufferedImage bi, double rads, double leftSideSensor, double frontSensor) {
+        GarageSettings garageSettings = fileHelper.getCurrentGarageSettings();
         bi = rotateImage(bi, rads);
         List<Integer> xDistance = new ArrayList<>();
         for (int y = 0; y < bi.getHeight(); y++) {
@@ -55,14 +64,15 @@ public class ImageHelper {
             yDistance.add(countYDestination(bi, x));
         }
 
-        int xStarting = GarageConstants.WIDTH < bi.getWidth() ? GarageConstants.WIDTH - bi.getWidth() :
-                bi.getWidth() < FRONT_SENSOR_WIDTH_POSITION ? FRONT_SENSOR_WIDTH_POSITION - bi.getWidth() + 1 : 0;
-        int yStarting = GarageConstants.HEIGHT < bi.getHeight() ? GarageConstants.HEIGHT - bi.getHeight() :
-                bi.getHeight() < LEFT_SIDE_SENSOR_HEIGHT_POSITION ? LEFT_SIDE_SENSOR_HEIGHT_POSITION - bi.getHeight() + 1 : 0;
-        for (int x = xStarting; x < FRONT_SENSOR_WIDTH_POSITION; x++) {
-            for (int y = yStarting; y < LEFT_SIDE_SENSOR_HEIGHT_POSITION; y++) {
-                int xDestination = xDistance.get(LEFT_SIDE_SENSOR_HEIGHT_POSITION - y) + x;
-                int yDestination = yDistance.get(FRONT_SENSOR_WIDTH_POSITION - x) + y;
+
+        int xStarting = (int) (garageSettings.getGarageWidth() < bi.getWidth() ? garageSettings.getGarageWidth() - bi.getWidth() :
+                bi.getWidth() < garageSettings.getFrontSensor() ? garageSettings.getFrontSensor() - bi.getWidth() + 1 : 0);
+        int yStarting = (int) (garageSettings.getGarageHeight() < bi.getHeight() ? garageSettings.getGarageHeight() - bi.getHeight() :
+                bi.getHeight() < garageSettings.getLeftSensor() ? garageSettings.getLeftSensor() - bi.getHeight() + 1 : 0);
+        for (int x = xStarting; x < garageSettings.getFrontSensor(); x++) {
+            for (int y = yStarting; y < (int) garageSettings.getLeftSensor(); y++) {
+                int xDestination = xDistance.get((int) garageSettings.getLeftSensor() - y) + x;
+                int yDestination = yDistance.get((int) garageSettings.getFrontSensor() - x) + y;
                 if (yDestination == frontSensor && xDestination == leftSideSensor) {
                     LOGGER.info(frontSensor + ", " + leftSideSensor + ": {" + x + ", " + y + "} " + xDestination + " " + yDestination);
                     return Optional.of(Coordinates.builder()
@@ -83,6 +93,17 @@ public class ImageHelper {
                 .width(bi.getWidth() * cos + bi.getHeight() * sin)
                 .height(bi.getHeight() * cos + bi.getWidth() * sin)
                 .build();
+    }
+
+    public BufferedImage getCurrentCarImage() {
+        CarSettings currentCar = fileHelper.getCurrentCar();
+        String imagePath = IMAGE_BASE_PATH + currentCar.getImageFileName() + IMAGE_BASE_FORMAT;
+        try {
+            return ImageIO.read(new File(imagePath));
+        } catch (IOException e) {
+            LOGGER.error("Error while reading car#" + currentCar.getId() + " image from file system");
+            throw new IllegalArgumentException("Error while reading car#" + currentCar.getId() + " image from file system");
+        }
     }
 
     private BufferedImage rotateImage(BufferedImage bi, double rads) {

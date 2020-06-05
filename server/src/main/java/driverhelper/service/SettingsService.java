@@ -1,8 +1,7 @@
 package driverhelper.service;
 
-import driverhelper.constants.Constants;
-import driverhelper.helper.ConstantsHelper;
 import driverhelper.helper.FileHelper;
+import driverhelper.helper.ImageHelper;
 import driverhelper.model.Dimensions;
 import driverhelper.model.response.CarSettings;
 import driverhelper.model.response.GarageSettings;
@@ -24,13 +23,13 @@ public class SettingsService {
     private SettingsValidator settingsValidator;
 
     @Autowired
-    private ConstantsHelper constantsHelper;
+    private ImageHelper imageHelper;
 
     @Autowired
     private FileHelper fileHelper;
 
     public GarageSettings getGarageSettings() {
-        return fileHelper.getSettingsPropValues();
+        return fileHelper.getCurrentGarageSettings();
     }
 
     public void patchGarageSettings(GarageSettings garageSettings) {
@@ -40,8 +39,8 @@ public class SettingsService {
 
     public CarSettings setUpActiveCar(Integer carId) {
         settingsValidator.validateActiveCarNumber(carId);
-        constantsHelper.setCurrentCarId(carId);
-        return getCarImageDimensions(constantsHelper.getCurrentCarSettings());
+        fileHelper.setCurrentCarId(carId);
+        return getCarImageDimensions(fileHelper.getCurrentCar());
     }
 
     public List<CarSettings> getAllCars() {
@@ -51,7 +50,7 @@ public class SettingsService {
     }
 
     private CarSettings getCarImageDimensions(CarSettings car) {
-        BufferedImage carImage = constantsHelper.getCurrentCarImage();
+        BufferedImage carImage = imageHelper.getCurrentCarImage();
         car.setImageDimensions(Dimensions.builder().width(carImage.getWidth()).height(carImage.getHeight()).build());
         return car;
     }

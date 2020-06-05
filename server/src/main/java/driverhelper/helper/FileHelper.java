@@ -25,6 +25,7 @@ public class FileHelper {
     public static String RIGHT_ANGLE_SENSOR = "right_angle_sensor";
     public static List<String> CARS = Arrays.asList("car1", "car2", "car3", "car4", "car5", "car6", "car7", "car8", "car9", "car10");
     public static String LEFT_SENSOR = "left_sensor";
+    public static String CURRENT_CAR_ID = "current_car_id";
     private static Properties propsBuff;
     public static int MAX_CAR_SETTINGS_AVAILABLE = 10;
     private static boolean shouldBuffReload = false;
@@ -44,11 +45,8 @@ public class FileHelper {
         LOGGER.info("Rewriting settings property file");
     }
 
-    public void setPropertyValue(String propertyName, String value) {
-        Properties props = getPropsBuff();
-        props.put(propertyName, value);
-        rewriteFile(props);
-        LOGGER.info("Rewriting settings property file");
+    public void setCurrentCarId(int carId) {
+        setPropertyValue(CURRENT_CAR_ID, Integer.toString(carId));
     }
 
     public List<CarSettings> getAllAvailableCarSettings() {
@@ -57,6 +55,10 @@ public class FileHelper {
             getCarById(i).ifPresent(carList::add);
         });
         return carList;
+    }
+
+    public int getCurrentCarId() {
+        return Integer.parseInt(getPropValues(CURRENT_CAR_ID));
     }
 
     public Optional<CarSettings> getCarById(int id) {
@@ -74,17 +76,15 @@ public class FileHelper {
                 .build());
     }
 
-    public String getPropValues(String propertyName) {
-        Properties props = getPropsBuff();
-        return props.getProperty(propertyName);
+    public CarSettings getCurrentCar() {
+        int currentCarId = getCurrentCarId();
+        Optional<CarSettings> currentCar = getCarById(currentCarId);
+        if (currentCar.isPresent())
+            return currentCar.get();
+        throw new IllegalArgumentException("Current car#" + currentCarId + " from settings is not present");
     }
 
-    public double getDoublePropValues(String propertyName) {
-        Properties props = getPropsBuff();
-        return Double.parseDouble(props.getProperty(propertyName));
-    }
-
-    public GarageSettings getSettingsPropValues() {
+    public GarageSettings getCurrentGarageSettings() {
         return GarageSettings.builder()
                 .garageWidth(getDoublePropValues(GARAGE_WIDTH))
                 .garageHeight(getDoublePropValues(GARAGE_HEIGHT))
@@ -93,6 +93,23 @@ public class FileHelper {
                 .rightAngleSensor(getDoublePropValues(RIGHT_ANGLE_SENSOR))
                 .leftSensor(getDoublePropValues(LEFT_SENSOR))
                 .build();
+    }
+
+    public void setPropertyValue(String propertyName, String value) {
+        Properties props = getPropsBuff();
+        props.put(propertyName, value);
+        rewriteFile(props);
+        LOGGER.info("Rewriting settings property file");
+    }
+
+    public String getPropValues(String propertyName) {
+        Properties props = getPropsBuff();
+        return props.getProperty(propertyName);
+    }
+
+    public double getDoublePropValues(String propertyName) {
+        Properties props = getPropsBuff();
+        return Double.parseDouble(props.getProperty(propertyName));
     }
 
     private List<String> splitComplexProperty(String property) {

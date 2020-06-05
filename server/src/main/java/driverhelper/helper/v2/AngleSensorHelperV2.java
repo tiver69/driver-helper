@@ -1,31 +1,36 @@
 package driverhelper.helper.v2;
 
 import driverhelper.controller.SettingsController;
+import driverhelper.helper.FileHelper;
 import driverhelper.model.Coordinates;
+import driverhelper.model.response.GarageSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-
-import static driverhelper.constants.GarageConstants.*;
 
 @Component
 public class AngleSensorHelperV2 extends driverhelper.helper.AngleSensorHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingsController.class);
     private static final MathContext ROUNDED = new MathContext(10);
-    private BigDecimal xb = BigDecimal.valueOf(WIDTH / -2);
-    private BigDecimal yb = BigDecimal.valueOf(HEIGHT - LEFT_ANGLE_SENSOR_HEIGHT_POSITION);
-    private BigDecimal xc = BigDecimal.valueOf(WIDTH / 2);
-    private BigDecimal yc = BigDecimal.valueOf(HEIGHT - RIGHT_ANGLE_SENSOR_HEIGHT_POSITION);
+    private BigDecimal xb;
+    private BigDecimal yb;
+    private BigDecimal xc;
+    private BigDecimal yc;
+
+    @Autowired
+    private FileHelper fileHelper;
 
     /**
      * @return (360 - angle) if left sensor data is lesser than right,
      * and angle if left sensor data is bigger than right
      */
     public double getAngle(double leftAngleSensorData, double rightAngleSensorData) {
+        updateGarageSettings();
         Coordinates leftSensor = getLeftSensorCoordinates(leftAngleSensorData);
         Coordinates rightSensor = getRightSensorCoordinates(rightAngleSensorData);
         Coordinates zPoint = getZ(leftSensor, rightSensor);
@@ -78,5 +83,13 @@ public class AngleSensorHelperV2 extends driverhelper.helper.AngleSensorHelper {
         BigDecimal sum1 = BigDecimal.valueOf(pointTwo.getX()).subtract(BigDecimal.valueOf(pointOne.getX())).pow(2);
         BigDecimal sum2 = BigDecimal.valueOf(pointTwo.getY()).subtract(BigDecimal.valueOf(pointOne.getY())).pow(2);
         return sum1.add(sum2).sqrt(ROUNDED);
+    }
+
+    private void updateGarageSettings() {
+        GarageSettings garageSettings = fileHelper.getCurrentGarageSettings();
+        xb = BigDecimal.valueOf(garageSettings.getGarageWidth() / -2);
+        yb = BigDecimal.valueOf(garageSettings.getGarageHeight() - garageSettings.getLeftAngleSensor());
+        xc = BigDecimal.valueOf(garageSettings.getGarageWidth() / 2);
+        yc = BigDecimal.valueOf(garageSettings.getGarageHeight() - garageSettings.getRightAngleSensor());
     }
 }
