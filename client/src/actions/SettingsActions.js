@@ -9,10 +9,10 @@ import {
 
 export const setUpActiveCar = carId => async dispatch => {
   try {
-    await axios.post(`/api/settings?carId=${carId}`);
+    const res = await axios.post(`/api/settings?carId=${carId}`);
     dispatch({
-      type: GET_MAPPED_ERRORS,
-      payload: {}
+      type: SET_ACTIVE_CAR,
+      payload: res.data
     });
   } catch (err) {
     dispatch({

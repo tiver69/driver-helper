@@ -67,10 +67,30 @@ class TrackingTab extends Component {
       left: dataNode.positionX + "px"
     };
 
-    const dynamicStyle = {
+    const { currentCar } = this.props.settings;
+    const imageWidth =
+      currentCar.imageDimensions !== undefined
+        ? currentCar.imageDimensions.width
+        : 0;
+    const imageHeight =
+      currentCar.imageDimensions !== undefined
+        ? currentCar.imageDimensions.height
+        : 0;
+    const imageBasePath = "/images/";
+    const imageFileFormat = ".png";
+
+    const dynamicStyleBefore = {
       transform: "rotate(" + dataNode.degree + "deg)",
       top: dataNode.shiftedWidth + "px",
-      left: dataNode.shiftedHeight + "px"
+      left: dataNode.shiftedHeight + "px",
+      backgroundImage:
+        "url(" +
+        imageBasePath +
+        currentCar.imageFileName +
+        imageFileFormat +
+        ")",
+      width: imageWidth,
+      height: imageHeight
     };
 
     const dynamicStyleBackgroung = {
@@ -97,7 +117,7 @@ class TrackingTab extends Component {
             <div className="col-12  justify-content-md-center align-self-center">
               <div id="background" style={dynamicStyleBackgroung}>
                 <div id="car" style={dynamicStyle0}>
-                  <div id="before" style={dynamicStyle}></div>
+                  <div id="before" style={dynamicStyleBefore}></div>
                 </div>
               </div>
             </div>

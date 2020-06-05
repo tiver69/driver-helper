@@ -1910,9 +1910,6 @@ a:hover.back-to-top {
 #before {
   content: "";
   position: absolute;
-  width: 228px;
-  height: 502px;
-  background-image: url("../images/aveo-fade.png");
   background-repeat: no-repeat;
 }
 

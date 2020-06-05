@@ -1,5 +1,6 @@
 package driverhelper.model.response;
 
+import driverhelper.model.Dimensions;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,16 +11,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarSettings {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String brand;
     private String model;
-    private String imageSrc;
+    private Dimensions imageDimensions;
+    private String imageFileName;
 }

@@ -1,8 +1,8 @@
-import { GET_ALL_CARS, GET_SETTINGS } from "../actions/types";
+import { GET_ALL_CARS, SET_ACTIVE_CAR, GET_SETTINGS } from "../actions/types";
 
 const initialState = {
   allCars: [],
-  curentCar: {},
+  currentCar: {},
   garageConfig: {}
 };
 
@@ -12,6 +12,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         allCars: action.payload
+      };
+    case SET_ACTIVE_CAR:
+      return {
+        ...state,
+        currentCar: action.payload
       };
     case GET_SETTINGS:
       return {

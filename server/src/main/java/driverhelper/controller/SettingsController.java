@@ -24,9 +24,9 @@ public class SettingsController {
 
     @PostMapping
     public ResponseEntity<?> setUpActiveCar(@RequestParam("carId") Integer carId) {
-        settingsService.setUpActiveCar(carId);
+        CarSettings response = settingsService.setUpActiveCar(carId);
         LOGGER.info("Setting car#" + carId + " as active");
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping

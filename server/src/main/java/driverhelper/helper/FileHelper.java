@@ -25,11 +25,12 @@ public class FileHelper {
     public static String RIGHT_ANGLE_SENSOR = "right_angle_sensor";
     public static List<String> CARS = Arrays.asList("car1", "car2", "car3", "car4", "car5", "car6", "car7", "car8", "car9", "car10");
     public static String LEFT_SENSOR = "left_sensor";
-    public static int MAX_CAR_SETTINGS_AVAILABLE = 10;
-    private static String DELIMITER = ":";
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileHelper.class);
     private static Properties propsBuff;
+    public static int MAX_CAR_SETTINGS_AVAILABLE = 10;
     private static boolean shouldBuffReload = false;
+
+    private static final String DELIMITER = ":";
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileHelper.class);
 
     public void setGarageSettings(GarageSettings garageSettings) {
         Properties props = getPropsBuff();
@@ -69,7 +70,7 @@ public class FileHelper {
                 .id(Long.valueOf(carProps.get(0)))
                 .brand(carProps.get(1))
                 .model(carProps.get(2))
-                .imageSrc(carProps.get(3))
+                .imageFileName(carProps.get(3))
                 .build());
     }
 

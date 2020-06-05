@@ -15,7 +15,7 @@ class Landing extends Component {
       <CarSlide
         key={car.id}
         id={car.id}
-        src={car.imageSrc}
+        src={car.imageFileName}
         brand={car.brand}
         model={car.model}
       />
