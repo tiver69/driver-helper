@@ -123,6 +123,7 @@ class TrackingTab extends Component {
                   <div id="before" style={dynamicStyleBefore}></div>
                 </div>
               </div>
+              <div id="after" syle={{ top: this.state.leftSensor }}></div>
             </div>
           </div>
         </div>

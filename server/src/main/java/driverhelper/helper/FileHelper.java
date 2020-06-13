@@ -96,6 +96,11 @@ public class FileHelper {
                 .build();
     }
 
+    public String getTestDataArrayFileName(){
+        shouldBuffReload = true;
+        return getPropValues(FileHelper.TEST_DATA_ARRAY);
+    }
+
     public void setPropertyValue(String propertyName, String value) {
         Properties props = getPropsBuff();
         props.put(propertyName, value);

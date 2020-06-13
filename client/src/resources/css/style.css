@@ -1901,10 +1901,23 @@ a:hover.back-to-top {
   margin: auto;
 }
 
+#after {
+  content: "`";
+  position: absolute;
+  top: 530px;
+  height: 2px;
+  width: 100%;
+  color: black; /* Цвет текста */
+  border-bottom-width: 2px; /* Толщина линии внизу */
+  border-bottom-style: dashed; /* Стиль линии внизу */
+  border-bottom-color: #2f2c3d; /* Цвет линии внизу */
+}
+
 #car {
   content: "";
   position: relative;
   overflow: hidden;
+  z-index: 1;
 }
 
 #before {

@@ -62,7 +62,7 @@ public class DataService {
     }
 
     public void reloadTestDataArray() {
-        String testFileName = fileHelper.getPropValues(FileHelper.TEST_DATA_ARRAY);
+        String testFileName = fileHelper.getTestDataArrayFileName();
         TestDataArray.reloadTestDataArray(RESOURCES_BASE_PATH + testFileName);
     }
 }

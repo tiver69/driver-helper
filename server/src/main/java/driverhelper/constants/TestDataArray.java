@@ -1,7 +1,10 @@
 package driverhelper.constants;
 
 import driverhelper.model.response.SensorNode;
+import driverhelper.service.SettingsService;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,13 +18,14 @@ import static driverhelper.constants.Constants.RESOURCES_BASE_PATH;
 
 public final class TestDataArray {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestDataArray.class);
+
     @Getter
     private static int currentSensorDataStep = 0;
 
     public static void nextSensorDataStep() {
         currentSensorDataStep++;
     }
-
     public static void resetSensorDataStep() {
         currentSensorDataStep = 0;
     }
@@ -61,6 +65,7 @@ public final class TestDataArray {
 
     public static void reloadTestDataArray(String fileName) {
         sensorData = new ArrayList<>();
+        LOGGER.info("Using test data array from "+ fileName);
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line = reader.readLine();
             while (line != null) {
