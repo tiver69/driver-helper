@@ -26,6 +26,7 @@ public class FileHelper {
     public static List<String> CARS = Arrays.asList("car1", "car2", "car3", "car4", "car5", "car6", "car7", "car8", "car9", "car10");
     public static String LEFT_SENSOR = "left_sensor";
     public static String CURRENT_CAR_ID = "current_car_id";
+    public static String TEST_DATA_ARRAY = "test_data_array";
     private static Properties propsBuff;
     public static int MAX_CAR_SETTINGS_AVAILABLE = 10;
     private static boolean shouldBuffReload = false;

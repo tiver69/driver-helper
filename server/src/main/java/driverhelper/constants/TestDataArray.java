@@ -3,8 +3,15 @@ package driverhelper.constants;
 import driverhelper.model.response.SensorNode;
 import lombok.Getter;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static driverhelper.constants.Constants.RESOURCES_BASE_PATH;
 
 public final class TestDataArray {
 
@@ -19,7 +26,7 @@ public final class TestDataArray {
         currentSensorDataStep = 0;
     }
 
-    public static final List<SensorNode> sensorData = Arrays.asList(
+    public static List<SensorNode> sensorData = Arrays.asList(
             new SensorNode(300, 410, 0, 400, 600),
             new SensorNode(300, 410, 0, 400, 592),
             new SensorNode(300, 410, 0, 400, 572),
@@ -49,5 +56,28 @@ public final class TestDataArray {
             new SensorNode(53, 400, 0, 400, 80),
             new SensorNode(60, 400, 0, 400, 60),
             new SensorNode(67, 400, 0, 400, 46),
+            new SensorNode(300, 400, 0, 400, 20),
             new SensorNode(300, 400, 0, 400, 20));
+
+    public static void reloadTestDataArray(String fileName) {
+        sensorData = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line = reader.readLine();
+            while (line != null) {
+                List<String> sensorNode = Arrays.asList(line.split(","));
+                sensorData.add(
+                        SensorNode.builder()
+                                .leftSide(Integer.parseInt(sensorNode.get(0)))
+                                .leftSideAngle(Integer.parseInt(sensorNode.get(1)))
+                                .rightSide(Integer.parseInt(sensorNode.get(2)))
+                                .rightSideAngle(Integer.parseInt(sensorNode.get(3)))
+                                .front(Integer.parseInt(sensorNode.get(4)))
+                                .build()
+                );
+                line = reader.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

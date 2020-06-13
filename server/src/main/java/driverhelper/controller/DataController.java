@@ -40,6 +40,7 @@ public class DataController {
     @PostMapping("/reset") //todo: will be removed later
     public ResponseEntity<?> resetSensorDataToFirstElement() {
         LOGGER.debug("Reset test data-pack to first element");
+        dataService.reloadTestDataArray();
         TestDataArray.resetSensorDataStep();
         Data response = new Data();
         response.setSensorNodeStep(TestDataArray.getCurrentSensorDataStep());

@@ -36,7 +36,7 @@ class TrackingTab extends Component {
   }
 
   async doStartResivingData() {
-    if (this.state.i === 29) {
+    if (this.state.i === 30) {
       console.log("reset");
       this.props.postResetData();
       this.setState({ i: 0 });
@@ -93,7 +93,9 @@ class TrackingTab extends Component {
       height: imageHeight
     };
 
+    const error = this.props.error;
     const dynamicStyleBackgroung = {
+      backgroundColor: error.stringError === "" ? "white" : "#e2b9b9",
       width: this.state.garageWidth + "px",
       height: this.state.garageHeight + "px"
     };
@@ -105,6 +107,7 @@ class TrackingTab extends Component {
         role="tabpanel"
         aria-labelledby="tab-2"
       >
+        {/* <div>{stringError ? stringError : ""}</div> */}
         <div className="container">
           <div
             className="row"
@@ -133,11 +136,13 @@ TrackingTab.propTypes = {
   getDataNode: PropTypes.func.isRequired,
   setUpActiveCar: PropTypes.func.isRequired,
   postResetData: PropTypes.func.isRequired,
-  settings: PropTypes.object.isRequired
+  settings: PropTypes.object.isRequired,
+  error: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   settings: state.settings,
+  error: state.error,
   dataNode: state.dataNode
 });
 export default connect(mapStateToProps, {

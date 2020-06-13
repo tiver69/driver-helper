@@ -16,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Optional;
+
+import static driverhelper.constants.Constants.RESOURCES_BASE_PATH;
 
 @Service
 public class DataService {
@@ -33,18 +36,15 @@ public class DataService {
     public Data getCurrentDataPack() {
         SensorNode currentSensorNode = TestDataArray.sensorData.get(TestDataArray.getCurrentSensorDataStep());
         BufferedImage carImage = imageHelper.getCurrentCarImage();
-        GarageSettings garageSettings = fileHelper.getCurrentGarageSettings();
 
         double currentAngle = angleSensorHelper.getAngle(currentSensorNode.getLeftSideAngle(), currentSensorNode.getRightSideAngle());
         Dimensions rotatedDimensions = imageHelper.getDimensionsAfterRotation(carImage, currentAngle);
-        Optional<Coordinates> rotatedPosition;
-        if (currentSensorNode.getFront() > garageSettings.getLeftSensor() || currentSensorNode.getLeftSide() >
-                garageSettings.getFrontSensor()) {
-            rotatedPosition = Optional.of(new Coordinates());
-        } else
-            rotatedPosition = imageHelper.getRotatedImagePositionOnCurrentSensorData(carImage, currentAngle, currentSensorNode.getLeftSide(), currentSensorNode.getFront());
-
+        Optional<Coordinates> rotatedPosition = imageHelper.getRotatedImagePositionOnCurrentSensorData(carImage, currentAngle, currentSensorNode.getLeftSide(), currentSensorNode.getFront());
         TestDataArray.nextSensorDataStep();
+        if (rotatedPosition.isEmpty()) {
+            throw new IllegalArgumentException("No position found for " + Math.toDegrees(currentAngle) + " degrees rotation on sensor data: {" + currentSensorNode.getLeftSide() + ", " + currentSensorNode.getFront() + "}");
+        }
+
         return Data.builder()
                 .sensorNodeStep(TestDataArray.getCurrentSensorDataStep())
                 .degree(Math.toDegrees(currentAngle))
@@ -59,5 +59,10 @@ public class DataService {
 
     public SensorNode getCurrentSensorNodeDataPack() {
         return TestDataArray.sensorData.get(TestDataArray.getCurrentSensorDataStep());
+    }
+
+    public void reloadTestDataArray() {
+        String testFileName = fileHelper.getPropValues(FileHelper.TEST_DATA_ARRAY);
+        TestDataArray.reloadTestDataArray(RESOURCES_BASE_PATH + testFileName);
     }
 }
